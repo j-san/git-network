@@ -1,8 +1,10 @@
 
-Git Network
-===========
+[Git Network](http://www.jsan.me/git-network/#j-san)
+=============
 
-Just a sanbox app that load user repos on https://api.github.com/ and show it on a graph using Knockout + Gulp + Bootstrap + D3 + Less.
+Just a sanbox app to chalenge Knockout + Gulp + Bootstrap + D3 + Less.
+
+It load user repos on https://api.github.com/ and show repos and users in a graph.
 
 Install
 -------
