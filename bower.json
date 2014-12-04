@@ -1,0 +1,23 @@
+{
+  "name": "Git Network",
+  "version": "0.0.1",
+  "authors": [
+    "Jonathan Sanchez"
+  ],
+  "license": "ISC",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "~3.2.0",
+    "requirejs": "~2.1.15",
+    "jquery": "~2.1.1",
+    "bootstrap": "~3.3.1",
+    "d3": "~3.4.13",
+    "sammy": "~0.7.6"
+  }
+}
