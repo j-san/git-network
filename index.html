@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+    <section id="app">
+        <h1 data-bind="text: title"></h1>
+        <p data-bind="text: user"></p>
+        <p data-bind="text: error" class="text-danger"></p>
+    </section>
+
+    <section id="repos">
+        <select data-bind="options: modes, selectedOptions: mode"></select>
+        <ul data-bind="visible: mode() == 'text', foreach: items">
+            <li data-bind="text: name"></li>
+        </ul>
+        <div data-bind="visible: mode() == 'graph'" id="graph-proximity" class="graph">
+        </div>
+    </section>
+
+    <script data-main="js/config" src="bower_components/requirejs/require.js"></script>
+</body>
+</html>
