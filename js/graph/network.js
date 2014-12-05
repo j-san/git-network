@@ -1,11 +1,12 @@
 define(['d3', 'jquery'], function (d3, $) {
     var maxRadius = 40;
 
-    function NetworkGraph(github) {
+    function NetworkGraph(github, elem) {
         var self = this;
 
-        this.container = $('#graph-proximity');
+        this.container = $(elem);
         this.force = d3.layout.force();
+        this.github = github;
 
         // max to the available sceen minus a margin
         this.width = Math.min(1000, this.container.width() - 40);
@@ -23,7 +24,7 @@ define(['d3', 'jquery'], function (d3, $) {
             .attr("width", this.width)
             .attr("height", this.height);
 
-        github.items.subscribe(function (data) {
+        this.github.items.subscribe(function (data) {
             self.root = data;
             self.root.fixed = true;
             self.root.x = self.width / 2;
@@ -87,7 +88,7 @@ define(['d3', 'jquery'], function (d3, $) {
             .attr("r", function(d) {
                 return d.type === 'repo' ? d.radius : 10;
             })
-            // .on("click", this.click.bind(this))
+            .on("click", this.click.bind(this))
             .call(this.force.drag);
 
         this.node
@@ -109,14 +110,11 @@ define(['d3', 'jquery'], function (d3, $) {
         this.node.attr("transform", function(d) {
             return "translate(" + d.x + "," + d.y + ")";
         });
-        // this.node.attr("cx", function(d) { return d.x; })
-        //     .attr("cy", function(d) { return d.y; });
     };
 
-    // Toggle children on click.
-    // NetworkGraph.prototype.click = function click(d) {
-    //     this.update();
-    // };
+    NetworkGraph.prototype.click = function click(d) {
+        // this.github.load(d);
+    };
 
 
     return NetworkGraph;

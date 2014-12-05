@@ -8,7 +8,7 @@ function(ko, Sammy, $, AppModel, GithubModel, NetworkGraph) {
     var github = new GithubModel();
     ko.applyBindings(github, document.getElementById('repos'));
 
-    var graph = new NetworkGraph(github);
+    var graph = new NetworkGraph(github, document.getElementById('network-graph'));
 
     var GITHUB_REPOS_URL = 'https://api.github.com/users/:user/repos';
 
