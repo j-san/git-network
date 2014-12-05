@@ -2699,7 +2699,10 @@ a.label:focus {
     display: none !important;
   }
 }
-circle.node {
+.graph {
+  text-align: center;
+}
+circle {
   cursor: pointer;
   stroke: #444;
   stroke-width: 2px;
@@ -2710,30 +2713,12 @@ circle.user {
 circle.repo {
   fill: #3182bd;
 }
-line.link {
+line {
   fill: none;
   stroke: #9ecae1;
   stroke-width: 1.5px;
 }
-.graph {
-  text-align: center;
-}
-circle.node {
-  cursor: pointer;
-  stroke: #444;
-  stroke-width: 2px;
-}
-circle.user {
-  fill: #ccc;
-}
-circle.repo {
-  fill: #3182bd;
-}
-line.link {
-  fill: none;
-  stroke: #9ecae1;
-  stroke-width: 1.5px;
-}
-.graph {
-  text-align: center;
+text {
+  pointer-events: none;
+  font: 10px sans-serif;
 }
