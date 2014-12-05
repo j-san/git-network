@@ -14,15 +14,12 @@ define(['d3', 'jquery'], function (d3, $) {
 
         this.force
             .on("tick", this.tick.bind(this))
-            .charge(function(d) {
-                return d._children ? -d.size / 100 : -30;
-            })
             .linkDistance(function(d) {
-                return d.target.stars ;
+                return 100 * (d.target.stars + 1) / self.maxStars;
             })
             .size([this.width, this.height]);
 
-        this.vis = d3.select(this.container[0]).append('svg:svg')
+        this.vis = d3.select(this.container[0]).append('svg')
             .attr("width", this.width)
             .attr("height", this.height);
 
@@ -48,6 +45,9 @@ define(['d3', 'jquery'], function (d3, $) {
                 self.maxStars = node.stars;
             }
         });
+        nodes.forEach(function (node, index) {
+            node.radius = maxRadius * (node.stars + 1) / (self.maxStars + 1);
+        });
 
         // Restart the force layout.
         this.force
@@ -60,7 +60,7 @@ define(['d3', 'jquery'], function (d3, $) {
             .data(links, function(d) { return d.target.id; });
 
         // Enter any new links.
-        this.link.enter().insert("svg:line", ".node")
+        this.link.enter().insert("line", ".node")
             .attr("class", "link")
             .attr("x1", function(d) { return d.source.x; })
             .attr("y1", function(d) { return d.source.y; })
@@ -75,19 +75,25 @@ define(['d3', 'jquery'], function (d3, $) {
             .data(nodes, function(d) { return d.id; });
 
         // Enter any new nodes.
-        this.node.enter().append("svg:circle")
+        this.node.enter()
+            .append("g");
+
+        this.node
+            .append("circle")
             .attr("class", function (d) {
                 return "node " + d.type;
             })
-            .attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; })
             .attr("r", function(d) {
-                return d.type === 'repo' ?
-                    maxRadius * (d.stars + 1) / self.maxStars :
-                    10;
+                return d.type === 'repo' ? d.radius : 10;
             })
-            .on("click", this.click.bind(this))
+            // .on("click", this.click.bind(this))
             .call(this.force.drag);
+
+        this.node
+            .append("text")
+            .attr("dx", function (d) { return d.radius * 0.9; })
+            .attr("dy", function (d) { return d.radius * 0.7; })
+            .text(function(d) { return d.radius > 8 ? d.name : ''; });
 
         // Exit any old nodes.
         this.node.exit().remove();
@@ -99,21 +105,17 @@ define(['d3', 'jquery'], function (d3, $) {
             .attr("x2", function(d) { return d.target.x; })
             .attr("y2", function(d) { return d.target.y; });
 
-        this.node.attr("cx", function(d) { return d.x; })
-            .attr("cy", function(d) { return d.y; });
+        this.node.attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+        // this.node.attr("cx", function(d) { return d.x; })
+        //     .attr("cy", function(d) { return d.y; });
     };
 
     // Toggle children on click.
-    NetworkGraph.prototype.click = function click(d) {
-        if (d.children) {
-            d._children = d.children;
-            d.children = null;
-        } else {
-            d.children = d._children;
-            d._children = null;
-        }
-        this.update();
-    };
+    // NetworkGraph.prototype.click = function click(d) {
+    //     this.update();
+    // };
 
 
     return NetworkGraph;
