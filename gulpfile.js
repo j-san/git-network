@@ -3,7 +3,6 @@ var path = require('path');
 var $ = require('gulp-load-plugins')();
 
 gulp.task('less', function () {
-        console.log(path.join(__dirname, 'bower_components', 'bootstrap', 'less'));
     return gulp.src('./less/main.less')
         .pipe($.less({
             paths: [
