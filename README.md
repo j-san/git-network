@@ -2,6 +2,9 @@
 [Git Network](http://www.jsan.me/git-network/#j-san)
 =============
 
+[![Build Status](https://travis-ci.org/j-san/git-network.svg)](https://travis-ci.org/j-san/git-network)
+http://www.jsan.me/git-network/test/
+
 Just a sanbox app to chalenge Knockout + Gulp + Bootstrap + D3 + Less.
 
 It load user repos on https://api.github.com/ and show repos and users in a graph.

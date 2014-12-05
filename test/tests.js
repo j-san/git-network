@@ -84,7 +84,7 @@ define(
                var svg = elem.children[0];
                svg.localName.should.equal('svg');
                done();
-            });
+            }, 100);
         });
     });
 });
