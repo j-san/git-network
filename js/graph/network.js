@@ -76,12 +76,13 @@ define(['d3', 'jquery'], function (d3, $) {
 
         // Enter any new nodes.
         this.node.enter()
-            .append("g");
+            .append('g')
+            .attr('class', 'node');
 
         this.node
             .append("circle")
             .attr("class", function (d) {
-                return "node " + d.type;
+                return d.type;
             })
             .attr("r", function(d) {
                 return d.type === 'repo' ? d.radius : 10;
