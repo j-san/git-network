@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mocha</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../bower_components/mocha/mocha.css" />
+     <style>div#blanket-main { margin: 0 25px 0 65px; font-size: 12px }</style>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../bower_components/mocha/mocha.js"></script>
+    <script>mocha.setup('bdd');</script>
+
+    <script data-main="config.js" src="../bower_components/requirejs/require.js"></script>
+
+    <script src="../bower_components/blanket/dist/qunit/blanket.js" data-cover-never="['bower_components', 'test']"></script>
+    <script src="../bower_components/blanket/src/adapters/mocha-blanket.js"></script>
+    <script src="/testem.js"></script>
+  </body>
+</html>
