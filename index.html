@@ -5,15 +5,17 @@
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
-<body>
-    <section id="app">
-        <h1 data-bind="text: title"></h1>
-        <p data-bind="text: user"></p>
+<body class="container">
+    <section id="app" class="row">
+        <h1 data-bind="text: title" class="text-center"></h1>
         <p data-bind="text: error" class="text-danger"></p>
     </section>
 
-    <section id="repos">
-        <select data-bind="options: modes, selectedOptions: mode"></select>
+    <section id="repos" class="row">
+        <span class="pull-right">
+            <label for="mode">View mode</label>
+            <select data-bind="options: modes, selectedOptions: mode" id="mode"></select>
+        </span>
         <ul data-bind="visible: mode() == 'text', foreach: items">
             <li data-bind="text: name"></li>
         </ul>
