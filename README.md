@@ -3,7 +3,7 @@
 =============
 
 [![Build Status](https://travis-ci.org/j-san/git-network.svg)](https://travis-ci.org/j-san/git-network)
-[Test & coverage](http://www.jsan.me/git-network/test/)
+[**Test & coverage**](http://www.jsan.me/git-network/test/)
 
 Just a sanbox app to chalenge Knockout + Gulp + Bootstrap + D3 + Less.
 
