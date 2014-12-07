@@ -4,12 +4,13 @@ define(['knockout'], function(ko) {
         this.user = ko.observable('');
 
         this.error = ko.computed(function () {
-            if (! this.user()) {
-                return 'no user selected';
-            }
+            return !this.user();
         }, this);
 
         this.title = ko.computed(function () {
+            if (!this.user()) {
+                return 'no user selected';
+            }
             return this.user() + '\'s Git Network';
         }, this);
     }

@@ -1,5 +1,5 @@
 define(['d3', 'jquery'], function (d3, $) {
-    var maxRadius = 40;
+    var maxRadius = 30;
 
     function NetworkGraph(github, elem) {
         var self = this;
@@ -11,12 +11,13 @@ define(['d3', 'jquery'], function (d3, $) {
         // max to the available sceen minus a margin
         this.width = Math.min(1000, this.container.width() - 40);
         this.height = 800;
-        this.maxStars = 1;
+        this.maxWeight = 1;
 
         this.force
             .on("tick", this.tick.bind(this))
+            .charge(-120)
             .linkDistance(function(d) {
-                return 100 * (d.target.stars + 1) / self.maxStars;
+                return 4 * d.target.radius;
             })
             .size([this.width, this.height]);
 
@@ -25,40 +26,44 @@ define(['d3', 'jquery'], function (d3, $) {
             .attr("height", this.height);
 
         this.github.items.subscribe(function (data) {
-            self.root = data;
-            self.root.fixed = true;
-            self.root.x = self.width / 2;
-            self.root.y = self.height / 2 - 80;
 
-            self.update();
+            self.update(data);
         });
     }
 
-    NetworkGraph.prototype.update = function () {
-        var self = this,
-            nodes = this.root,
-            links = d3.layout.tree().links(nodes);
+    NetworkGraph.prototype.update = function (data) {
+        var self = this;
 
-        nodes.forEach(function (node, index) {
-            node.id = index + 1;
+        self.nodes = data;
 
-            if (node.stars > self.maxStars) {
-                self.maxStars = node.stars;
+        this.nodes.forEach(function (node, index) {
+            if(!node.id) {
+               node.id = index + 1;
+            }
+
+            node.weight = Math.sqrt(node.stars + 1);
+            if (node.weight > self.maxWeight) {
+                self.maxWeight = node.weight;
             }
         });
-        nodes.forEach(function (node, index) {
-            node.radius = maxRadius * (node.stars + 1) / (self.maxStars + 1);
+        this.nodes.forEach(function (node, index) {
+            if (node.type === 'repo') {
+                node.radius = maxRadius * node.weight / self.maxWeight;
+            } else {
+                node.radius = 10;
+            }
         });
+        this.links = this.makeLinks(this.nodes);
 
         // Restart the force layout.
         this.force
-          .nodes(nodes)
-          .links(links)
+          .nodes(this.nodes)
+          .links(this.links)
           .start();
 
         // Update the links.
         this.link = this.vis.selectAll("line.link")
-            .data(links, function(d) { return d.target.id; });
+            .data(this.links, function(d) { return d.source.id + '-' + d.target.id; });
 
         // Enter any new links.
         this.link.enter().insert("line", ".node")
@@ -72,13 +77,18 @@ define(['d3', 'jquery'], function (d3, $) {
         this.link.exit().remove();
 
         // Update the nodes.
-        this.node = this.vis.selectAll("circle.node")
-            .data(nodes, function(d) { return d.id; });
+        this.node = this.vis.selectAll("g.node")
+            .data(this.nodes, function(d) { return d.id; });
 
         // Enter any new nodes.
         this.node.enter()
             .append('g')
             .attr('class', 'node');
+
+        this.node.selectAll("circle")
+            .attr("r", function(d) {
+                return d.radius;
+            });
 
         this.node
             .append("circle")
@@ -86,22 +96,34 @@ define(['d3', 'jquery'], function (d3, $) {
                 return d.type;
             })
             .attr("r", function(d) {
-                return d.type === 'repo' ? d.radius : 10;
+                return d.radius;
             })
             .on("click", this.click.bind(this))
             .call(this.force.drag);
 
         this.node
             .append("text")
-            .attr("dx", function (d) { return d.radius * 0.9; })
-            .attr("dy", function (d) { return d.radius * 0.7; })
-            .text(function(d) { return d.radius > 8 ? d.name : ''; });
+            .attr("dx", function (d) { return d.radius * 0.8; })
+            .attr("dy", function (d) { return d.radius * 1; })
+            .text(function(d) { return d.name; });
 
         // Exit any old nodes.
         this.node.exit().remove();
     };
 
-    NetworkGraph.prototype.tick = function tick() {
+    NetworkGraph.prototype.makeLinks = function (nodes) {
+        var links = [];
+        nodes.forEach(function (node) {
+            if ('children' in node) {
+                node.children.forEach(function (child) {
+                    links.push({source: node, target: child});
+                });
+            }
+        });
+        return links;
+    };
+
+    NetworkGraph.prototype.tick = function () {
         this.link.attr("x1", function(d) { return d.source.x; })
             .attr("y1", function(d) { return d.source.y; })
             .attr("x2", function(d) { return d.target.x; })
@@ -112,8 +134,10 @@ define(['d3', 'jquery'], function (d3, $) {
         });
     };
 
-    NetworkGraph.prototype.click = function click(d) {
-        // this.github.load(d);
+    NetworkGraph.prototype.click = function (d) {
+        if (d.type === 'repo') {
+            this.github.loadRepo(d);
+        }
     };
 
 

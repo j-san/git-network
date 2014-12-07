@@ -10,22 +10,10 @@ function(ko, Sammy, $, AppModel, GithubModel, NetworkGraph) {
 
     var graph = new NetworkGraph(github, document.getElementById('network-graph'));
 
-    var GITHUB_REPOS_URL = 'https://api.github.com/users/:user/repos';
-
-    function loadUser (username) {
-        app.user(username);
-        var url = GITHUB_REPOS_URL.replace(':user', app.user());
-
-        $.get(url, function (results) {
-            results.forEach(function (repo) {
-                github.addRepo(repo);
-            });
-        });
-    }
-
     Sammy(function() {
         this.get('#:user', function() {
-            loadUser(this.params.user);
+            app.user(this.params.user);
+            github.loadUser({login: app.user()});
         });
 
         this.get('', function() {});
