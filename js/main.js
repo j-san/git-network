@@ -16,18 +16,22 @@ function(ko, Sammy, $, AppModel, GithubModel, NetworkGraph) {
         }
     });
 
-    Sammy(function() {
-        this.get('#:user', function() {
-            app.user(this.params.user);
-            github.loadUser({login: app.user()}).then(function () {
+    $(window).on('hashchange', function() {
+        var path = document.location.hash;
+        if (path && path[0] === '#') {
+            path = path.slice(1);
+        }
+        if (path) {
+            if (path !== app.user()) {
+                app.user(path);
+            }
+            github.loadUser({login: app.user()}).always(function () {
                 if(!github.items().length) {
                     app.message('Is it a github user?');
                 } else {
                     app.message('');
                 }
             });
-        });
-
-        this.get('', function() {});
-    }).run();
+        }
+    }).trigger('hashchange');
 });
