@@ -65,6 +65,8 @@ define(['knockout'], function (ko) {
         var self = this;
         var url = GITHUB_USER_REPOS_URL.replace(':user', user.login);
 
+        this.error('');
+
         return $.get(url).then(function (results) {
             results.forEach(function (repo) {
                 self.addRepo(repo, user);
@@ -75,6 +77,8 @@ define(['knockout'], function (ko) {
     GithubModel.prototype.loadRepo = function (repo) {
         var self = this;
         var url = GITHUB_REPO_USERS_URL.replace(':owner', repo.owner).replace(':repo', repo.name);
+
+        this.error('');
 
         return $.get(url).then(function (results) {
 

@@ -39,6 +39,7 @@ gulp.task('testem', function () {
     });
 });
 
+// dist : cp -r css/ js/ bower_components/ test/ index.html dist/
 gulp.task('default', ['test']);
 gulp.task('dist', ['less']);
 gulp.task('test', ['jshint', 'testem']);
