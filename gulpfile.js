@@ -39,6 +39,6 @@ gulp.task('testem', function () {
     });
 });
 
-gulp.task('default', ['jshint']);
+gulp.task('default', ['test']);
 gulp.task('dist', ['less']);
 gulp.task('test', ['jshint', 'testem']);
