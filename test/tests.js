@@ -22,9 +22,9 @@ define(
             github.items.subscribe(function () {
                 count++;
             });
-            github.addRepo({name: 'test-1', owner: {login: 'a' }});
-            github.addRepo({name: 'test-2', owner: {login: 'a' }});
-            github.addRepo({name: 'test-3', owner: {login: 'b' }});
+            github.addRepo({name: 'test-1', owner: {login: 'a' }}, {login: 'a' });
+            github.addRepo({name: 'test-2', owner: {login: 'a' }}, {login: 'a' });
+            github.addRepo({name: 'test-3', owner: {login: 'b' }}, {login: 'a' });
 
             setTimeout(function () {
                 // async, lets resolve subscription at next tick
@@ -36,7 +36,7 @@ define(
         it('should add a user when add a repo', function () {
             var github = new GithubModel();
 
-            github.addRepo({name: 'test-project-1', owner: {login: 'test-user' }});
+            github.addRepo({name: 'test-project-1', owner: {login: 'test-user' }}, {login: 'test-user' });
             github.items().length.should.equal(2);
 
             var user = ko.utils.arrayFirst(github.items(), function (item) {
@@ -53,8 +53,8 @@ define(
         it('should keep user unique', function () {
             var github = new GithubModel();
 
-            github.addRepo({name: 'test-project-1', owner: {login: 'test-user' }});
-            github.addRepo({name: 'test-project-2', owner: {login: 'test-user' }});
+            github.addRepo({name: 'test-project-1', owner: {login: 'test-user' }}, {login: 'test-user' });
+            github.addRepo({name: 'test-project-2', owner: {login: 'test-user' }}, {login: 'test-user' });
             github.items().length.should.equal(3);
 
             var user = ko.utils.arrayFirst(github.items(), function (item) {
@@ -75,8 +75,8 @@ define(
             var elem = document.createElement('div');
             var graph = new NetworkGraph(github, elem);
 
-            github.addRepo({name: 'test-project-1', owner: {login: 'test-user' }});
-            github.addRepo({name: 'test-project-2', owner: {login: 'test-user' }});
+            github.addRepo({name: 'test-project-1', owner: {login: 'test-user' }}, {login: 'test-user' });
+            github.addRepo({name: 'test-project-2', owner: {login: 'test-user' }}, {login: 'test-user' });
             github.items().length.should.equal(3);
 
             setTimeout(function () {
