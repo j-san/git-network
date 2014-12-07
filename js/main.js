@@ -31,15 +31,8 @@ function(ko, Sammy, $, AppModel, GithubModel, NetworkGraph) {
                 } else {
                     app.message('');
                 }
-            }, function (jqxhr) {
-                if(jqxhr.responseJSON) {
-                    app.message(jqxhr.responseJSON.message);
-                } else if (jqxhr.statusText) {
-                    app.message(jqxhr.statusText);
-                } else {
-                    app.message(jqxhr);
-                }
-
+            }, function () {
+                app.message(github.error());
             });
         }
     }).trigger('hashchange');
