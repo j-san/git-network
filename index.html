@@ -1,25 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Git Network</title>
     <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="css/main.css">
 </head>
 <body class="container">
+    <a href="https://github.com/j-san/git-network">
+        <img style="position: absolute; top: 0; right: 0; border: 0;"
+            src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"
+            alt="Fork me on GitHub">
+    </a>
     <section id="app" class="row">
-        <h1 data-bind="text: title" class="text-center"></h1>
-        <p data-bind="text: error" class="text-danger"></p>
+        <h1 data-bind="text: title, css: { 'text-danger': error }" class="text-center"></h1>
+        <form data-bind="if: error" role="form" class="form-username">
+            <div class="form-group">
+                <label for="username">Github username</label>
+                <input data-bind="value: user" id="username" class="form-control" placeholder="tj, aheckmann or j-san..." />
+            </div>
+        </form>
     </section>
 
-    <section id="repos" class="row">
-        <span class="pull-right">
+    <section id="repos" class="row" data-bind="visible: items().length">
+        <span data-bind="text: error" class="text-danger"></span>
+        <p>
             <label for="mode">View mode</label>
             <select data-bind="options: modes, selectedOptions: mode" id="mode"></select>
-        </span>
+        </p>
         <ul data-bind="visible: mode() == 'text', foreach: items">
-            <li data-bind="text: name"></li>
+            <!-- ko if: type === 'user' -->
+            <li>
+                <span data-bind="text: name"></span>
+                <ul data-bind="foreach: children">
+                    <li>
+                        <span data-bind="text: name"></span>
+                    </li>
+                </ul>
+            </li>
+            <!-- /ko -->
         </ul>
         <div data-bind="visible: mode() == 'graph'" id="network-graph" class="graph">
+            <p class="text-muted"><em>Click on bubbles to extend the network</em></p>
         </div>
     </section>
 
