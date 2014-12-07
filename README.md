@@ -1,5 +1,5 @@
 
-[Git Network](http://www.jsan.me/git-network/#j-san)
+[Git Network](http://www.jsan.me/git-network/)
 =============
 
 [![Build Status](https://travis-ci.org/j-san/git-network.svg)](https://travis-ci.org/j-san/git-network)
@@ -38,9 +38,3 @@ Dist
 ```
 gulp dist
 ```
-
-TODO
-----
-
-- message click on bullets to load more
-- some initial user ?

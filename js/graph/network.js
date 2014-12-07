@@ -4,12 +4,11 @@ define(['d3', 'jquery'], function (d3, $) {
     function NetworkGraph(github, elem) {
         var self = this;
 
-        this.container = $(elem);
         this.force = d3.layout.force();
         this.github = github;
 
         // max to the available sceen minus a margin
-        this.width = Math.min(1000, this.container.width() - 40);
+        this.width = Math.min(1000, $(document.body).width() - 40);
         this.height = 800;
         this.maxWeight = 1;
 
@@ -21,7 +20,7 @@ define(['d3', 'jquery'], function (d3, $) {
             })
             .size([this.width, this.height]);
 
-        this.vis = d3.select(this.container[0]).append('svg')
+        this.vis = d3.select(elem).append('svg')
             .attr("width", this.width)
             .attr("height", this.height);
 
