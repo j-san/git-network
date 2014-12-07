@@ -3,14 +3,16 @@ define(
     function(ko, chai, AppModel, GithubModel, NetworkGraph) {
     chai.should();
 
-    describe('app model', function () {
+    describe('app model', function (done) {
         it('should has username in title', function () {
 
             var app = new AppModel();
             // set user name
             app.user('mocha-user-test');
 
-            app.title().should.contain('mocha-user-test');
+            setTimeout(function () {
+               app.title().should.contain('mocha-user-test');
+            });
         });
     });
 
