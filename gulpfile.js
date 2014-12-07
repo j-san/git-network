@@ -35,7 +35,7 @@ gulp.task('testem', function () {
     var api = new testem();
     api.startCI({
         test_page: 'test/index.html',
-        launch: 'phantomjs,firefox'
+        launch: 'phantomjs'
     });
 });
 

@@ -25,21 +25,14 @@ function(ko, Sammy, $, AppModel, GithubModel, NetworkGraph) {
             if (path !== app.user()) {
                 app.user(path);
             }
-            github.loadUser({login: app.user()}).get(function () {
+            github.loadUser({login: app.user()}).then(function () {
                 if(!github.items().length) {
                     app.message('Is it a github user?');
                 } else {
                     app.message('');
                 }
-            }, function (jqxhr) {
-                if(jqxhr.responseJSON) {
-                    app.message(jqxhr.responseJSON.message);
-                } else if (jqxhr.statusText) {
-                    app.message(jqxhr.statusText);
-                } else {
-                    app.message(jqxhr);
-                }
-
+            }, function () {
+                app.message(github.error());
             });
         }
     }).trigger('hashchange');
