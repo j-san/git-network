@@ -81,6 +81,7 @@ define(['knockout'], function (ko) {
             results.forEach(function (result) {
 
                 var user = self.findUser(result);
+                self.addRepo(repo, user || result);
                 if(!user) {
                     self.loadUser(result);
                 } else {

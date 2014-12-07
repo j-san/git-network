@@ -39,3 +39,9 @@ Dist
 gulp dist
 ```
 
+TODO
+----
+
+- github banner
+- message click on bullets to load more
+- some initial user ?
